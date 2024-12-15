@@ -1,7 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Originals IMDB Scores</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <header>
+        <h1>Netflix Originals Data Visualization</h1>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Distribution of IMDB Scores by Top 5 Genres</h2>
+            <canvas id="imdbGenreChart" width="400" height="200"></canvas>
+        </section>
+    </main>
+    
+    <script>
+        // Sample data for the chart (this will be dynamically generated later)
+        const genres = ["Documentary", "Thriller", "Science fiction/Drama", "Horror thriller", "Mystery"];
+        const imdbScores = {
+            "Documentary": [2.5, 3.2, 4.0, 6.5, 7.1],
+            "Thriller": [2.6, 4.5, 5.8, 6.2, 7.0],
+            "Science fiction/Drama": [2.6, 4.2, 5.0, 5.9, 6.8],
+            "Horror thriller": [3.2, 4.0, 4.8, 5.5, 6.7],
+            "Mystery": [3.4, 4.3, 5.2, 6.1, 7.3]
+        };
+
+        const datasets = Object.keys(imdbScores).map(genre => {
+            return {
+                label: genre,
+                data: imdbScores[genre].map((score, index) => ({ x: genres[index], y: score })),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            };
+        });
+
+        const ctx = document.getElementById('imdbGenreChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy'
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Genre: ${context.dataset.label}, IMDB Score: ${context.parsed.y}`;
+                            }
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: genres,
+                        title: {
+                            display: true,
+                            text: 'Genres'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'IMDB Score'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
