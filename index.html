@@ -16,6 +16,9 @@
     <main>
         <section>
             <h2>Distribution of IMDB Scores by Top 5 Genres</h2>
+            <button id="reset-zoom">Reset Zoom</button>
+            <button id="clear-bin">Clear Bin</button>
+            <button id="dark-mode-toggle">Toggle Dark Mode</button>
             <div id="chart"></div>
             <div id="tooltip" style="position: absolute; opacity: 0; background-color: white; border: 1px solid #ccc; padding: 8px; border-radius: 4px; pointer-events: none;"></div>
             <div id="bin">
@@ -26,122 +29,141 @@
     </main>
     
     <script>
-        // Sample data for the chart
-        const data = [
-            { genre: "Documentary", score: 2.5 },
-            { genre: "Documentary", score: 3.2 },
-            { genre: "Documentary", score: 4.0 },
-            { genre: "Documentary", score: 6.5 },
-            { genre: "Documentary", score: 7.1 },
-            { genre: "Thriller", score: 2.6 },
-            { genre: "Thriller", score: 4.5 },
-            { genre: "Thriller", score: 5.8 },
-            { genre: "Thriller", score: 6.2 },
-            { genre: "Thriller", score: 7.0 },
-            { genre: "Science fiction/Drama", score: 2.6 },
-            { genre: "Science fiction/Drama", score: 4.2 },
-            { genre: "Science fiction/Drama", score: 5.0 },
-            { genre: "Science fiction/Drama", score: 5.9 },
-            { genre: "Science fiction/Drama", score: 6.8 },
-            { genre: "Horror thriller", score: 3.2 },
-            { genre: "Horror thriller", score: 4.0 },
-            { genre: "Horror thriller", score: 4.8 },
-            { genre: "Horror thriller", score: 5.5 },
-            { genre: "Horror thriller", score: 6.7 },
-            { genre: "Mystery", score: 3.4 },
-            { genre: "Mystery", score: 4.3 },
-            { genre: "Mystery", score: 5.2 },
-            { genre: "Mystery", score: 6.1 },
-            { genre: "Mystery", score: 7.3 }
-        ];
-
-        // Declare the chart dimensions and margins
-        const width = 800;
-        const height = 500;
-        const marginTop = 50;
-        const marginRight = 30;
-        const marginBottom = 70;
-        const marginLeft = 50;
-
-        // Declare the x (horizontal position) scale
-        const x = d3.scalePoint()
-            .domain(data.map(d => d.genre))
-            .range([marginLeft, width - marginRight])
-            .padding(0.5);
-
-        // Declare the y (vertical position) scale
-        const y = d3.scaleLinear()
-            .domain([0, 10])
-            .range([height - marginBottom, marginTop]);
-
-        // Create the SVG container
-        const svg = d3.select("#chart")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height)
-            .call(d3.zoom().on("zoom", (event) => {
-                svgGroup.attr("transform", event.transform);
-            }));
-
-        // Create a group for chart elements
-        const svgGroup = svg.append("g");
-
-        // Add the x-axis
-        svgGroup.append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x))
-            .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end");
-
-        // Add the y-axis
-        svgGroup.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y));
-
-        // Tooltip element
-        const tooltip = d3.select("#tooltip");
-
-        // Bin list element
-        const binList = d3.select("#bin-list");
-
-        // Add the dots with hover and click interaction
-        svgGroup.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", d => x(d.genre))
-            .attr("cy", d => y(d.score))
-            .attr("r", 5)
-            .style("fill", "#69b3a2")
-            .style("opacity", 0.7)
-            .on("mouseover", (event, d) => {
-                d3.select(event.currentTarget)
-                    .transition()
-                    .duration(200)
-                    .attr("r", 8)
-                    .style("fill", "#e50914");
-                tooltip.style("opacity", 1)
-                    .html(`Genre: ${d.genre}<br>Score: ${d.score}`)
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 20) + "px");
-            })
-            .on("mousemove", (event) => {
-                tooltip.style("left", (event.pageX + 10) + "px")
-                       .style("top", (event.pageY - 20) + "px");
-            })
-            .on("mouseout", (event) => {
-                d3.select(event.currentTarget)
-                    .transition()
-                    .duration(200)
-                    .attr("r", 5)
-                    .style("fill", "#69b3a2");
-                tooltip.style("opacity", 0);
-            })
-            .on("click", (event, d) => {
-                const entryText = `Genre: ${d.genre}, Score: ${d.score}`;
-                binList.append("li").text(entryText);
+        // Load data from CSV file
+        d3.csv("netflix.csv").then(function(data) {
+            // Parse the data
+            data.forEach(function(d) {
+                d.score = +d.score; // Convert score to number
             });
+
+            // Declare the chart dimensions and margins
+            const width = 800;
+            const height = 500;
+            const marginTop = 50;
+            const marginRight = 30;
+            const marginBottom = 70;
+            const marginLeft = 50;
+
+            // Declare the x (horizontal position) scale
+            const x = d3.scalePoint()
+                .domain(data.map(d => d.genre))
+                .range([marginLeft, width - marginRight])
+                .padding(0.5);
+
+            // Declare the y (vertical position) scale
+            const y = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height - marginBottom, marginTop]);
+
+            // Create the SVG container
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .call(d3.zoom().on("zoom", (event) => {
+                    svgGroup.attr("transform", event.transform);
+                }));
+
+            // Create a group for chart elements
+            const svgGroup = svg.append("g");
+
+            // Add gradient definition
+            svg.append("defs").append("linearGradient")
+                .attr("id", "gradient")
+                .attr("x1", "0%")
+                .attr("y1", "0%")
+                .attr("x2", "100%")
+                .attr("y2", "100%")
+                .selectAll("stop")
+                .data([
+                    { offset: "0%", color: "#ff7f50" },
+                    { offset: "100%", color: "#ff4500" }
+                ])
+                .enter().append("stop")
+                .attr("offset", d => d.offset)
+                .attr("stop-color", d => d.color);
+
+            // Add the x-axis
+            svgGroup.append("g")
+                .attr("transform", `translate(0,${height - marginBottom})`)
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end");
+
+            // Add the y-axis
+            svgGroup.append("g")
+                .attr("transform", `translate(${marginLeft},0)`)
+                .call(d3.axisLeft(y));
+
+            // Tooltip element
+            const tooltip = d3.select("#tooltip");
+
+            // Bin list element
+            const binList = d3.select("#bin-list");
+
+            // Add the dots with hover and click interaction
+            svgGroup.selectAll("circle")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("cx", d => x(d.genre))
+                .attr("cy", d => y(d.score))
+                .attr("r", 5)
+                .style("fill", "url(#gradient)")
+                .style("opacity", 0.7)
+                .on("mouseover", (event, d) => {
+                    d3.select(event.currentTarget)
+                        .transition()
+                        .duration(200)
+                        .attr("r", 8)
+                        .style("fill", "#e50914");
+                    tooltip.style("opacity", 1)
+                        .html(`🎬 Genre: ${d.genre}<br>⭐ Score: ${d.score}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mousemove", (event) => {
+                    tooltip.style("left", (event.pageX + 10) + "px")
+                           .style("top", (event.pageY - 20) + "px");
+                })
+                .on("mouseout", (event) => {
+                    d3.select(event.currentTarget)
+                        .transition()
+                        .duration(200)
+                        .attr("r", 5)
+                        .style("fill", "url(#gradient)");
+                    tooltip.style("opacity", 0);
+                })
+                .on("click", (event, d) => {
+                    const entryText = `Genre: ${d.genre}, Score: ${d.score}`;
+                    binList.append("li")
+                        .text(entryText)
+                        .style("opacity", 0)
+                        .transition()
+                        .duration(500)
+                        .style("opacity", 1);
+                });
+
+            // Clear bin functionality
+            d3.select("#clear-bin").on("click", () => {
+                binList.html("");
+                svgGroup.selectAll("circle")
+                    .transition()
+                    .duration(200)
+                    .style("fill", "url(#gradient)")
+                    .attr("stroke", "none");
+            });
+
+            // Reset zoom functionality
+            d3.select("#reset-zoom").on("click", () => {
+                svg.transition()
+                    .duration(750)
+                    .call(d3.zoom().transform, d3.zoomIdentity);
+            });
+        }).catch(function(error) {
+            console.error('Error loading or parsing data:', error);
+        });
     </script>
 </body>
 </html>
