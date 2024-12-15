@@ -139,9 +139,14 @@
                 tooltip.style("opacity", 0);
             })
             .on("click", (event, d) => {
-                binList.append("li")
-                    .text(`Genre: ${d.genre}, Score: ${d.score}`);
-            });
+    // Prevent duplicate entries
+    const entryText = `Genre: ${d.genre}, Score: ${d.score}`;
+    if (!binList.selectAll("li").nodes().some(li => li.textContent === entryText)) {
+        binList.append("li")
+            .text(entryText);
+    }
+});
+
     </script>
 </body>
 </html>
