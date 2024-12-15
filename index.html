@@ -6,7 +6,6 @@
     <title>Netflix Originals Data Visualization</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
 </head>
 <body>
     <header>
@@ -26,29 +25,27 @@
     </main>
     
     <script>
-        // Load the CSV file
-        d3.csv("NetflixOriginals.csv").then(function(data) {
-            // Parse the data
-            data.forEach(function(d) {
-                d.score = +d.score; // Convert score to number
+        // Fetch the data from the Flask server
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                console.log("Loaded Data:", data); // Debug log to verify data loading
+
+                // Set up the SVG element
+                const margin = {top: 20, right: 30, bottom: 40, left: 40};
+                const width = 800 - margin.left - margin.right;
+                const height = 400 - margin.top - margin.bottom;
+
+                const svg = d3.select("#chart")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", `translate(${margin.left},${margin.top})`);
+            })
+            .catch(error => {
+                console.error('Error loading or parsing data:', error);
             });
-
-            console.log("Loaded Data:", data); // Debug log to verify data loading
-
-            // Set up the SVG element
-            const margin = {top: 20, right: 30, bottom: 40, left: 40};
-            const width = 800 - margin.left - margin.right;
-            const height = 400 - margin.top - margin.bottom;
-
-            const svg = d3.select("#chart")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-        }).catch(function(error) {
-            console.error('Error loading or parsing data:', error);
-        });
     </script>
 </body>
 </html>
