@@ -6,6 +6,7 @@
     <title>Netflix Originals IMDB Scores</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-zoom/1.8.3/d3-zoom.min.js"></script>
 </head>
 <body>
     <header>
@@ -72,10 +73,16 @@
         const svg = d3.select("#chart")
             .append("svg")
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .call(d3.zoom().on("zoom", (event) => {
+                svgGroup.attr("transform", event.transform);
+            }));
+
+        // Create a group for chart elements
+        const svgGroup = svg.append("g");
 
         // Add the x-axis
-        svg.append("g")
+        svgGroup.append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
             .call(d3.axisBottom(x))
             .selectAll("text")
@@ -83,12 +90,12 @@
             .style("text-anchor", "end");
 
         // Add the y-axis
-        svg.append("g")
+        svgGroup.append("g")
             .attr("transform", `translate(${marginLeft},0)`)
             .call(d3.axisLeft(y));
 
         // Add the dots
-        svg.selectAll("circle")
+        svgGroup.selectAll("circle")
             .data(data)
             .enter()
             .append("circle")
