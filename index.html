@@ -18,6 +18,10 @@
             <h2>Distribution of IMDB Scores by Top 5 Genres</h2>
             <div id="chart"></div>
             <div id="tooltip" style="position: absolute; opacity: 0; background-color: white; border: 1px solid #ccc; padding: 8px; border-radius: 4px; pointer-events: none;"></div>
+            <div id="bin">
+                <h3>Selected Values</h3>
+                <ul id="bin-list"></ul>
+            </div>
         </section>
     </main>
     
@@ -98,7 +102,10 @@
         // Tooltip element
         const tooltip = d3.select("#tooltip");
 
-        // Add the dots with hover interaction
+        // Bin list element
+        const binList = d3.select("#bin-list");
+
+        // Add the dots with hover and click interaction
         svgGroup.selectAll("circle")
             .data(data)
             .enter()
@@ -130,6 +137,10 @@
                     .attr("r", 5)
                     .style("fill", "#69b3a2");
                 tooltip.style("opacity", 0);
+            })
+            .on("click", (event, d) => {
+                binList.append("li")
+                    .text(`Genre: ${d.genre}, Score: ${d.score}`);
             });
     </script>
 </body>
