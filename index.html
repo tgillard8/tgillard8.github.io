@@ -28,7 +28,7 @@
     
     <script>
         // Load the CSV file
-        d3.csv("netflix.csv").then(function(data) {
+        d3.csv("NetflixOriginals.csv").then(function(data) {
             // Parse the data
             data.forEach(function(d) {
                 d.score = +d.score; // Convert score to number
