@@ -3,20 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Genre Visualization</title>
+    <title>Interactive Netflix Originals Visualization</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <header>
-        <h1>Interactive Netflix Originals Genre Visualization</h1>
+        <h1>Top 5 Netflix Genres and Random Film Selector</h1>
     </header>
 
     <main>
-        <div id="chart"></div>
-        <div id="film-details" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-width: 500px;"></div>
+        <section>
+            <h2>Top 5 Genres by Number of Films</h2>
+            <div id="chart"></div>
+            <button id="random-genre-btn" style="margin-top: 20px;">Pick a Random Genre</button>
+        </section>
+
+        <section>
+            <h2>Random Film Details</h2>
+            <div id="film-details" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; max-width: 500px;"></div>
+        </section>
+
+        <!-- Link to Box Plot Page -->
+        <section style="margin-top: 40px;">
+            <a href="box-plot.html">
+                <button style="padding: 10px 20px; font-size: 16px;">View Box Plot Visualization</button>
+            </a>
+        </section>
     </main>
-    
-    <script src="script.js"></script>
+
+    <script src="data.js"></script>
 </body>
 </html>
