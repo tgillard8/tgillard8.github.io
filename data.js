@@ -1,9 +1,9 @@
-// Load the CSV file
 d3.csv("NetflixOriginals.csv").then(function(data) {
-    // Parse the data
+    // Parse the date and IMDB Score
+    const parseDate = d3.timeParse("%Y-%m-%d");
     data.forEach(function(d) {
-        d["IMDB Score"] = +d["IMDB Score"]; // Convert IMDB Score to number
-        d.Premiere = +d.Premiere; // Convert Premiere to number
+        d["IMDB Score"] = +d["IMDB Score"];
+        d.Premiere = parseDate(d.Premiere);
     });
 
     console.log("Loaded Data:", data); // Debug log to verify data loading
@@ -21,7 +21,7 @@ d3.csv("NetflixOriginals.csv").then(function(data) {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Set up the scales
-    const x = d3.scaleLinear()
+    const x = d3.scaleTime()
         .domain(d3.extent(data, d => d.Premiere))
         .range([0, width]);
 
@@ -33,7 +33,7 @@ d3.csv("NetflixOriginals.csv").then(function(data) {
     // Add the x-axis
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y")));
 
     // Add the y-axis
     svg.append("g")
