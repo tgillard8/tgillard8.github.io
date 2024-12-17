@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Documentation</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Optional CSS for styling -->
+</head>
+<body>
+    <header>
+        <h1>Design Documentation</h1>
+    </header>
+
+    <main>
+        <!-- Design Process Section -->
+        <section>
+            <p>
+                <h2>Research Question: What Netflix Genre has the Most films?</h2>
+            </p>
+            <h2>Design Process</h2>
+            <p>
+                The goal with this website was to create a data visualization around my love of movies that focused on <strong>simplicity</strong> and <strong>clarity</strong>. I wanted the visualizations to be easy to understand at a glance, which is why there are not too many convoluted design choices and elements. My initial idea and goal was to concentrate on an initial research question to build the rest of my visualization off of. I wanted to explore the relationship between the genre of a movie and its IMDB score. I wanted to see if there was a correlation between the genre of a movie and its IMDB score. I also wanted to see if there were any genres that were more popular than others in the Netflix Originals catalog.
+            </p>
+            <p>
+                <strong>Beginning Concepts</strong>: The initial sketches included a variety of visualization types such as:
+                <ul>
+                    <li><strong>Bar charts</strong> to display genre counts.</li>
+                    <li><strong>Scatter plots</strong> to explore relationships between release years and IMDB scores. The issue with Scatter plots, however, was that the dataset that I chose and the question that I wanted to answer wouldn't of been sufficient as the premiere dates feature within the dataset would've needed to be cleaned in order for me to visualize what I would've wanted to originally which was IMDB scores relative to their release dates. </li>
+                    <li><strong>Box plots</strong> to represent the distribution of IMDB scores. This was sufficient as it displayed not only the top 5 genres but also acts as a follow up to the data that some people could pull from the initial set.</li>
+                </ul>
+            </p>
+            <p>
+                Moving forward, it was evident that Bar Charts were the best choice to match the simplicity of the dataset and answer the inital question. This <strong>minimalist and straightforward</strong> design choice avoided clutter and unnecessary complexity. This lead to the following visusalizations:
+                <ul>
+                    <li>A <strong>Top 5 Genres Bar Chart</strong> to provide a quick overview of the most common genres within Netflix.</li>
+                    <li>A <strong>Box Plot</strong> to dive deeper into the distribution of IMDB scores within those genres to act as a follow up to the initial question over genre.</li>
+                </ul>
+            </p>
+        </section>
+        <!-- Rationale of Design Choices Section -->
+        <section>
+            <h2>Rationale</h2>
+            <p>
+                <strong>Simplicity and Consistency</strong>:
+                <ul>
+                    <li><strong>Color Palette</strong>: I chose <em>blue</em> for bars and <em>blue shades</em> for box plots. This use of color prevents visual overload and keeps the focus on the data and acted as a strong contrast to the red website elements (of which are in reference to Netflix). The blue also acts as a form of visual consistency throughout as swapping to a different color after the fact would not be an example of good UX design. </li>
+                    <li><strong>Interactivity</strong>: Hover effects and click events were designed to be <em>apparent and simple</em>. Hovering highlights bars in <em>orange</em>, and clicking displays a random film sample, just to display a small amount of interactivity.</li>
+                </ul>
+            </p>
+            <p>
+                <strong>Webpage Organization</strong>:
+                <ul>
+                    <li>The visualizations are arranged to guide the user from a <em>broad overview</em> (bar chart) to a <em>detailed analysis</em> (box plot). By having the interactive bar graph first, users can get drawn in and then go to the IMDB score distribution on the next page.</li>
+                    <li><strong>Navigation</strong> between pages helps maintain simplicity, avoiding clutter on a single page. By breaking everything up, the data is much more accessible and easier to understand.</li>
+                </ul>
+            </p>
+            <p>
+                <strong>Webpage Layout</strong>: 
+                <ul>
+                    <li>Whitespace and consistent margins ensure the charts are easy to read. This is another attempt at improving acessability</li>
+                    <li>Axes and titles are kept clear and concise to avoid overwhelming the user with details.</li>
+                </ul>
+            </p>
+        </section>
+
+        <!-- Discoveries and Insights Section -->
+        <section>
+            <h2>Data Insights</h2>
+            <p>
+                Here are the findings and insights from the Netflix Originals dataset:
+            </p>
+            <ul>
+                <li><strong>Genre Popularity</strong>: The bar chart shows that genres like <em>Documentary</em>,<em>Drama</em>,<em>Comedy</em>,<em>Romantic Comedy</em>,<em> and Thriller</em>dominate the Netflix Originals catalog. Documentary films populate Netflix the most</li>
+                <li><strong>IMDB Score Trends</strong>: The box plot reveals that <em>Documentaries</em> tend to have consistently high scores, while <em>Thriller</em> has the highest variability.</li>
+                <li><strong>Random Film Sampling</strong>: Clicking on a genre to see a random film provides an engaging way to connect broad trends to a specific example.</li>
+            </ul>
+            <p>
+                These insights offer a richer understanding of Netflix Originals and highlight areas where Netflix excels or where there is variability in content quality. This could also speak to a temporal trend in which Documentary films are either the easiest to finance and the most likely to obtain the highest ratings, or that they are the most popular genre on Netflix. This visualization does its job by not answering its original question but also opening the door for more questions to be asked.
+
+                <img src="Documentation.jpg" alt="Documentation" style="max-width: 100%; height: auto;">
+
+            </p>
+        </section>
+
+        <!-- Navigation Links -->
+        <section style="margin-top: 40px;">
+            <a href="index.html">
+                <button style="padding: 10px 20px; font-size: 16px;">Back to Main Visualization</button>
+            </a>
+            <a href="box-plot.html" style="margin-left: 20px;">
+                <button style="padding: 10px 20px; font-size: 16px;">View Box Plot</button>
+            </a>
+        </section>
+    </main>
+
+    <footer style="margin-top: 40px; text-align: center;">
+        <p>&copy; 2024 Netflix Originals Visualization Project</p>
+    </footer>
+</body>
+</html>
